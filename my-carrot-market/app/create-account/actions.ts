@@ -1,5 +1,6 @@
 'use server';
 
+import { PASSWORD_REGEX } from '@/lib/constants';
 import { z } from 'zod';
 
 const checkPassword = ({
@@ -12,14 +13,10 @@ const checkPassword = ({
   return password === confirmPassword;
 };
 
-const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#?!@&^&*])[A-Za-z\d#?!@&^&*]{6,}$/;
-
 const formSchema = z
   .object({
     username: z
       .string({ invalid_type_error: 'Username should contain the text!' })
-      .min(3, 'Username must contain at least 3 characters')
       .toLowerCase()
       .trim()
       .refine(
@@ -29,9 +26,8 @@ const formSchema = z
     email: z.string().email().toLowerCase(),
     password: z
       .string()
-      .min(4, 'Password must contain at least 6 characters')
       .regex(
-        passwordRegex,
+        PASSWORD_REGEX,
         'Password must contain lowercase, UPPERCASE, numbers and special characters.'
       ),
     confirmPassword: z.string(),

@@ -1,6 +1,10 @@
 'use server';
 
-export const handleForm = async (prevState: any, formData: FormData) => {
+export const login = async (prevState: any, formData: FormData) => {
+  const data = {
+    email: formData.get('email'),
+    password: formData.get('password'),
+  };
   return {
     errors: ['user not found'],
   };
