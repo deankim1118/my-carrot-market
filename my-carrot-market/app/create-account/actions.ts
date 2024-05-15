@@ -1,6 +1,10 @@
 'use server';
 
-import { PASSWORD_REGEX } from '@/lib/constants';
+import {
+  PASSWORD_MIN_LENTH,
+  PASSWORD_REGEX,
+  PASSWORD_REGEX_ERROR,
+} from '@/lib/constants';
 import { z } from 'zod';
 
 const checkPassword = ({
@@ -26,10 +30,8 @@ const formSchema = z
     email: z.string().email().toLowerCase(),
     password: z
       .string()
-      .regex(
-        PASSWORD_REGEX,
-        'Password must contain lowercase, UPPERCASE, numbers and special characters.'
-      ),
+      .min(PASSWORD_MIN_LENTH)
+      .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
     confirmPassword: z.string(),
   })
   .refine(checkPassword, {

@@ -17,13 +17,20 @@ export default function Login() {
         <h2>Login with email and password</h2>
       </div>
       <form action={dispatch} className='flex flex-col gap-3'>
-        <Input name='email' type='email' placeholder='Email' required />
+        <Input
+          name='email'
+          type='email'
+          placeholder='Email'
+          required
+          errors={state?.fieldErrors.email}
+        />
         <Input
           name='password'
           type='password'
           placeholder='Password'
           minLength={PASSWORD_MIN_LENTH}
           required
+          errors={state?.fieldErrors.password}
         />
 
         <Button text='Login' />
