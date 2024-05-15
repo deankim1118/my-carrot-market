@@ -30,7 +30,7 @@ export default function Login() {
           errors={[]}
         />
 
-        <FormButton loading={false} text='Login' />
+        <FormButton text='Login' />
       </form>
       <SocialLogin />
     </div>
