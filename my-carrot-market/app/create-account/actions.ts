@@ -1,6 +1,16 @@
 'use server';
 import { z } from 'zod';
 
+const checkPassword = ({
+  password,
+  confirmPassword,
+}: {
+  password: string;
+  confirmPassword: string;
+}) => {
+  return password === confirmPassword;
+};
+
 const formSchema = z
   .object({
     username: z
@@ -16,7 +26,7 @@ const formSchema = z
       .string()
       .min(6, 'Password must contain at least 6 characters'),
   })
-  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+  .refine(checkPassword, {
     message: 'Both password must be same',
     path: ['confirmPassword'],
   });
