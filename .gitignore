@@ -27,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+my-carrot-market/.env
 
 # vercel
 .vercel
@@ -37,5 +38,3 @@ next-env.d.ts
 
 # database
 *.db*
-
-
