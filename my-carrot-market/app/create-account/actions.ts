@@ -7,6 +7,7 @@ import {
 } from '@/lib/constants';
 import db from '@/lib/db';
 import { z } from 'zod';
+import bcrypt from 'bcrypt';
 
 const checkPassword = ({
   password,
@@ -82,7 +83,6 @@ export const createAccount = async (prevState: any, formData: FormData) => {
   const result = await formSchema.safeParseAsync(data);
 
   if (!result.success) {
-    console.log(result.error.flatten());
     return result.error.flatten();
   } else {
     // 1. check if username is taken & show an error message
@@ -90,7 +90,18 @@ export const createAccount = async (prevState: any, formData: FormData) => {
     // 2. ckeck if email is already used
     /// You can do this in validation of zod.refine(boolean, errorMessage) ///
     // 3. hash password
+    const hashedPassword = await bcrypt.hash(result.data.password, 12);
     // 4. save the user to db
+    const user = await db.user.create({
+      data: {
+        username: result.data.username,
+        email: result.data.email,
+        password: hashedPassword,
+      },
+      select: {
+        id: true,
+      },
+    });
     // 5. log the user in
     // 6. redirect to '/home'
   }
