@@ -8,6 +8,9 @@ import {
 import db from '@/lib/db';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
+import { getIronSession } from 'iron-session';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const checkPassword = ({
   password,
@@ -102,7 +105,15 @@ export const createAccount = async (prevState: any, formData: FormData) => {
         id: true,
       },
     });
-    // 5. log the user in
+    // 5. log the user in with cookie
+    const cookie = await getIronSession(cookies(), {
+      cookieName: 'yummy-carrot',
+      password: process.env.COOKIE_PASSWORD!,
+    });
+    //@ts-ignore
+    cookie.id = user.id;
+    await cookie.save();
     // 6. redirect to '/home'
+    redirect('/profile');
   }
 };
