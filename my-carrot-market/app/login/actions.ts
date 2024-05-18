@@ -33,10 +33,8 @@ const formSchema = z.object({
       checkEmailExist,
       'We cannot find a email you entered plaese use create account'
     ),
-  password: z
-    .string()
-    .min(PASSWORD_MIN_LENTH)
-    .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+  password: z.string().min(PASSWORD_MIN_LENTH),
+  //.regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
 });
 
 export const login = async (prevState: any, formData: FormData) => {
