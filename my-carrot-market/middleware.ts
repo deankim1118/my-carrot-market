@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import getSession from './lib/session';
+import { NextRequest } from 'next/server';
+import { getSession } from './lib/session';
 
 interface IRoutes {
   [key: string]: boolean;
