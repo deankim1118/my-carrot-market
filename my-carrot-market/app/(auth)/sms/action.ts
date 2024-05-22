@@ -5,7 +5,7 @@ import { z } from 'zod';
 import validator from 'validator';
 import { redirect } from 'next/navigation';
 import db from '@/lib/db';
-import { loginWithId } from '@/lib/session';
+import { getSession } from '@/lib/session';
 
 const phoneSchema = z
   .string()
@@ -101,7 +101,9 @@ export async function smsLogin(prevState: ActionState, formData: FormData) {
         },
       });
       // 2. log the user in
-      loginWithId(token!);
+      const session = await getSession();
+      session.id = token!.userId;
+      await session.save();
       await db.sMSToken.delete({
         where: {
           id: token!.id,
