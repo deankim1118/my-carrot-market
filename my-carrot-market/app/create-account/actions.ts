@@ -10,7 +10,7 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 
 import { redirect } from 'next/navigation';
-import getSession from '@/lib/session';
+import { getSession } from '@/lib/session';
 
 const checkPassword = ({
   password,
