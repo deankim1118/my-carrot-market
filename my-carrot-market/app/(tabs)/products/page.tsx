@@ -1,4 +1,3 @@
-import ListProduct from '@/components/listProduct';
 import ProductList from '@/components/product-list';
 import db from '@/lib/db';
 import { PlusIcon } from '@heroicons/react/24/solid';
