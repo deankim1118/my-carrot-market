@@ -5,9 +5,11 @@ import Input from '@/components/input';
 import { PhotoIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import uploadeProduct from './actions';
+import { useFormState } from 'react-dom';
 
 export default function AddProduct() {
   const [preview, setPreview] = useState('');
+  const [state, dispatch] = useFormState(uploadeProduct, null);
 
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -22,9 +24,10 @@ export default function AddProduct() {
       setPreview(url);
     }
   };
+
   return (
     <div>
-      <form action={uploadeProduct} className='flex flex-col gap-5 p-5'>
+      <form action={dispatch} className='flex flex-col gap-5 p-5'>
         <label
           htmlFor='photo'
           className='border-2 aspect-square flex flex-col items-center justify-center text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover'
@@ -33,9 +36,7 @@ export default function AddProduct() {
           {!preview ? (
             <>
               <PhotoIcon className='w-20' />
-              <div className='text-neutral-400 text-sm'>
-                Add Photo here
-              </div>{' '}
+              <div className='text-neutral-400 text-sm'>Add Photo here</div>
             </>
           ) : null}
         </label>
@@ -46,13 +47,26 @@ export default function AddProduct() {
           name='photo'
           className='hidden'
         />
-        <Input name='title' required placeholder='Title' type='text' />
-        <Input name='price' required placeholder='Price' type='number' />
+        <Input
+          name='title'
+          required
+          placeholder='Title'
+          type='text'
+          errors={state?.fieldErrors.title}
+        />
+        <Input
+          name='price'
+          required
+          placeholder='Price'
+          type='number'
+          errors={state?.fieldErrors.price}
+        />
         <Input
           name='description'
           required
           placeholder='Description'
           type='text'
+          errors={state?.fieldErrors.description}
         />
         <Button text='Add Product' />
       </form>
