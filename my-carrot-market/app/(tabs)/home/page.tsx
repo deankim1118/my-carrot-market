@@ -19,6 +19,7 @@ const getCachedProducts = nextCache(getInitialProducts, ['home-products']);
 // }
 
 async function getInitialProducts() {
+  console.log('Getting data');
   const products = await db.product.findMany({
     select: {
       title: true,
@@ -40,10 +41,10 @@ export type InitialProducts = Prisma.PromiseReturnType<
 >;
 
 export default async function Products() {
-  const initialProducts = await getCachedProducts();
+  const initialProducts = await getInitialProducts();
   const revalidate = async () => {
     'use server';
-    revalidatePath('/products');
+    revalidatePath('/home');
   };
   return (
     <div className='relative'>

@@ -21,13 +21,13 @@ export default function TabBar() {
   const pathName = usePathname();
   return (
     <div className='fixed bottom-0 w-full mx-auto max-w-screen-md grid grid-cols-5 border-neutral-600 border-t px-5 py-3 *:text-white bg-neutral-800'>
-      <Link href='/products' className='tab-link'>
-        {pathName === '/products' ? (
+      <Link href='/home' className='tab-link'>
+        {pathName === '/home' ? (
           <SolidHomeIcon className='w-7 h-7' />
         ) : (
           <OutlineHomeIcon className='w-7 h-7' />
         )}
-        <span>Products</span>
+        <span>Home</span>
       </Link>
       <Link href='/life' className='tab-link'>
         {pathName === '/life' ? (
