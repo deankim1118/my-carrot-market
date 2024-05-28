@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
     }
   } else {
     if (exists) {
-      return Response.redirect(new URL('/profile', request.url));
+      return Response.redirect(new URL('/home', request.url));
     }
   }
 }

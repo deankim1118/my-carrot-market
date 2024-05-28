@@ -41,7 +41,7 @@ export type InitialProducts = Prisma.PromiseReturnType<
 >;
 
 export default async function Products() {
-  const initialProducts = await getCachedProducts();
+  const initialProducts = await getInitialProducts();
   const revalidate = async () => {
     'use server';
     revalidatePath('/home');
@@ -49,11 +49,8 @@ export default async function Products() {
   return (
     <div className='relative'>
       <ProductList initialProducts={initialProducts} />
-      <form action={revalidate}>
-        <Button text='Revalidate all data' />
-      </form>
       <Link
-        href='/products/add'
+        href='/add-product'
         className='bg-orange-500 flex items-center justify-center rounded-full size-16  absolute -bottom-20 right-5 text-white transition-colors hover:bg-orange-400'
       >
         <PlusIcon className='size-10' />
