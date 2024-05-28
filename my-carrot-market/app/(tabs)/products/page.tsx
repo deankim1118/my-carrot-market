@@ -8,6 +8,16 @@ import Link from 'next/link';
 
 const getCachedProducts = nextCache(getInitialProducts, ['home-products']);
 
+// // You can use unstable_cache in fetch() as well.
+// async function getProduct() {
+//   fetch("https://api.com", {
+//     next: {
+//       revalidate: 60,
+//       tags: ["hello"],
+//     },
+//   });
+// }
+
 async function getInitialProducts() {
   const products = await db.product.findMany({
     select: {
