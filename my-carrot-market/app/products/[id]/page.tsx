@@ -5,6 +5,7 @@ import { notFound, redirect } from 'next/navigation';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { formatToUSD } from '@/lib/utils';
 import Link from 'next/link';
+import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
 
 async function getIsOwner(userId: number): Promise<boolean> {
   const session = await getSession();
@@ -29,6 +30,29 @@ async function getProduct(id: number) {
   return product;
 }
 
+async function getProductTitle(id: number) {
+  const product = await db.product.findUnique({
+    where: { id },
+    select: { title: true },
+  });
+  return product;
+}
+
+const getCachedProduct = nextCache(getProduct, ['product-detail'], {
+  tags: ['productDetail'],
+});
+
+const getCachedProductTitle = nextCache(getProductTitle, ['product-title'], {
+  tags: ['productTitle'],
+});
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const product = await getCachedProductTitle(Number(params.id));
+  return {
+    title: product?.title,
+  };
+}
+
 export default async function ProductDetail({
   params,
 }: {
@@ -40,7 +64,7 @@ export default async function ProductDetail({
     return notFound();
   }
 
-  const product = await getProduct(id);
+  const product = await getCachedProduct(id);
   if (!product) {
     return notFound();
   }
@@ -50,6 +74,11 @@ export default async function ProductDetail({
     'use server';
     await db.product.delete({ where: { id } });
     redirect('/products');
+  };
+
+  const revalidate = async () => {
+    'use server';
+    revalidateTag('productTitle');
   };
 
   return (
@@ -94,6 +123,11 @@ export default async function ProductDetail({
             </button>
           </form>
         ) : null}
+        <form action={revalidate}>
+          <button className='bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold'>
+            Revalidate Title only
+          </button>
+        </form>
         <Link
           className='bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold'
           href={``}
