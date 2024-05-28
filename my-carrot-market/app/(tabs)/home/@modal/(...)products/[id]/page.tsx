@@ -34,9 +34,8 @@ export default async function Modal({ params }: { params: { id: string } }) {
 
   return (
     <div className='absolute w-full h-full z-50 flex items-center justify-center bg-black bg-opacity-60 left-0 top-0'>
-      <div className='max-w-screen-md flex justify-center w-full h-3/4 my-20 rounded-2xl overflow-hidden '>
+      <div className='relative max-w-screen-md flex justify-center w-full h-3/4 my-20 rounded-2xl overflow-hidden '>
         <div className='bg-neutral-700 text-neutral-200 flex flex-col justify-between  w-full'>
-          <CloseButton />
           <div className='relative h-1/2'>
             <Image
               fill
@@ -73,6 +72,7 @@ export default async function Modal({ params }: { params: { id: string } }) {
               </span>
             </div>
           </div>
+          <CloseButton />
         </div>
       </div>
     </div>

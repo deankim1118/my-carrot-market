@@ -41,7 +41,7 @@ export type InitialProducts = Prisma.PromiseReturnType<
 >;
 
 export default async function Products() {
-  const initialProducts = await getInitialProducts();
+  const initialProducts = await getCachedProducts();
   const revalidate = async () => {
     'use server';
     revalidatePath('/home');
