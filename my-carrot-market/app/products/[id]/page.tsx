@@ -5,12 +5,14 @@ import { UserIcon } from '@heroicons/react/24/solid';
 import { formatToUSD } from '@/lib/utils';
 import Link from 'next/link';
 import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
+import { getSession } from '@/lib/session';
+import BackButton from '@/components/back-button';
 
 async function getIsOwner(userId: number): Promise<boolean> {
-  // const session = await getSession();
-  // if (session.id) {
-  //   return session.id === userId;
-  // }
+  const session = await getSession();
+  if (session.id) {
+    return session.id === userId;
+  }
   return false;
 }
 
@@ -75,14 +77,15 @@ export default async function ProductDetail({
     redirect('/products');
   };
 
-  const revalidate = async () => {
-    'use server';
-    revalidateTag('productTitle');
-  };
+  // const revalidate = async () => {
+  //   'use server';
+  //   revalidateTag('productTitle');
+  // };
 
   return (
-    <div>
-      <div className='relative aspect-square'>
+    <div className='relative max-w-screen-md h-screen flex flex-col justify-center '>
+      <BackButton />
+      <div className='relative w-full h-1/2'>
         <Image
           fill
           src={product.photo}
@@ -111,7 +114,8 @@ export default async function ProductDetail({
         <h1 className='text-2xl font-semibold'>{product.title}</h1>
         <p>{product.description}</p>
       </div>
-      <div className='fixed w-full bottom-0 left-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center'>
+
+      <div className='fixed bottom-0 self-center w-full p-5 bg-neutral-800 flex justify-between items-center max-w-screen-md '>
         <span className='font-semibold text-xl'>
           ${formatToUSD(product.price)}
         </span>
@@ -122,11 +126,6 @@ export default async function ProductDetail({
             </button>
           </form>
         ) : null}
-        <form action={revalidate}>
-          <button className='bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold'>
-            Revalidate Title only
-          </button>
-        </form>
         <Link
           className='bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold'
           href={``}
