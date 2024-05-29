@@ -5,6 +5,7 @@ import fs from 'fs/promises';
 import db from '@/lib/db';
 import { getSession } from '@/lib/session';
 import { redirect } from 'next/navigation';
+import { unstable_cache as nextCache, revalidatePath } from 'next/cache';
 
 const productSchema = z.object({
   photo: z.string(),
@@ -51,7 +52,9 @@ export default async function uploadeProduct(
           id: true,
         },
       });
+      revalidatePath('/home');
       redirect(`/products/${product.id}`);
     }
+    return null;
   }
 }

@@ -4,7 +4,7 @@ import { notFound, redirect } from 'next/navigation';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { formatToUSD } from '@/lib/utils';
 import Link from 'next/link';
-import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
+import { unstable_cache as nextCache, revalidatePath } from 'next/cache';
 import { getSession } from '@/lib/session';
 import BackButton from '@/components/back-button';
 
@@ -16,7 +16,7 @@ async function getIsOwner(userId: number): Promise<boolean> {
   return false;
 }
 
-async function getProduct(id: number) {
+export async function getProduct(id: number) {
   const product = await db.product.findUnique({
     where: { id },
     include: {
@@ -74,7 +74,13 @@ export default async function ProductDetail({
   const deleteProduct = async () => {
     'use server';
     await db.product.delete({ where: { id } });
-    redirect('/products');
+    revalidatePath('/home');
+    redirect('/home');
+  };
+
+  const editProduct = async () => {
+    'use server';
+    redirect(`/edit-product/${id}`);
   };
 
   // const revalidate = async () => {
@@ -120,11 +126,18 @@ export default async function ProductDetail({
           ${formatToUSD(product.price)}
         </span>
         {isOwner ? (
-          <form action={deleteProduct}>
-            <button className='bg-red-500 px-5 py-2.5 rounded-md text-white font-semibold'>
-              Delete product
-            </button>
-          </form>
+          <>
+            {/* <form action={editProduct}>
+              <button className='bg-blue-500 px-3 py-2.5 rounded-md text-white font-semibold'>
+                Edit product
+              </button>
+            </form> */}
+            <form action={deleteProduct}>
+              <button className='bg-red-500 px-3 py-2.5 rounded-md text-white font-semibold'>
+                Delete product
+              </button>
+            </form>
+          </>
         ) : null}
         <Link
           className='bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold'

@@ -4,6 +4,9 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { formatToUSD } from '@/lib/utils';
+import { unstable_cache as nextCache, revalidatePath } from 'next/cache';
+
+const getCachedProduct = nextCache(getProduct, ['product-detail']);
 
 async function getProduct(id: number) {
   const product = await db.product.findUnique({
@@ -27,7 +30,7 @@ export default async function Modal({ params }: { params: { id: string } }) {
     return notFound();
   }
 
-  const product = await getProduct(id);
+  const product = await getCachedProduct(id);
   if (!product) {
     return notFound();
   }
