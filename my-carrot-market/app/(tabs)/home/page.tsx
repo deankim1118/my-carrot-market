@@ -47,13 +47,13 @@ export default async function Products() {
   //   revalidatePath('/home');
   // };
   return (
-    <div className='relative'>
+    <div className='mb-[100px]'>
       <ProductList initialProducts={initialProducts} />
       <Link
         href='/add-product'
-        className='bg-orange-500 flex items-center justify-center rounded-full size-16  absolute -bottom-20 right-5 text-white transition-colors hover:bg-orange-400'
+        className='bg-orange-500 flex items-center justify-center rounded-full size-12  absolute top-5 right-5 text-white transition-colors hover:bg-orange-400'
       >
-        <PlusIcon className='size-10' />
+        <PlusIcon className='size-8' />
       </Link>
     </div>
   );

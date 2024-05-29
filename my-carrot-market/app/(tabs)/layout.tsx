@@ -6,7 +6,7 @@ export default function TabLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <div className='flex flex-col'>
       {children}
       <TabBar />
     </div>

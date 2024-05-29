@@ -8,10 +8,9 @@ export default function ProductsLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <div>
+    <>
       {modal}
       {children}
-      <TabBar />
-    </div>
+    </>
   );
 }
