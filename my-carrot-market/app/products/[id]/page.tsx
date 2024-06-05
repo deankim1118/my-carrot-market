@@ -132,6 +132,11 @@ export default async function ProductDetail({
                 Edit product
               </button>
             </form> */}
+            {/* <form action={editProduct}>
+              <button className='bg-red-500 px-3 py-2.5 rounded-md text-white font-semibold'>
+                Edit product
+              </button>
+            </form> */}
             <form action={deleteProduct}>
               <button className='bg-red-500 px-3 py-2.5 rounded-md text-white font-semibold'>
                 Delete product
